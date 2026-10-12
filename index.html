@@ -1,12 +1,486 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BotFlux AI - Chatbots Inteligentes para Tu Negocio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        },
+                        accent: {
+                            purple: '#8b5cf6',
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-effect {
+            box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.35);
+        }
+        /* Custom Scrollbar for chat interface */
+        .chat-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.2);
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.6);
+        }
+    </style>
 </head>
-<body>
-    <h1>Bienvenido a Git & Github</h1>
-    <p>En esta landing Page encontrarás mis servicios de Chatbot</p>
+<body class="bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+    <!-- Elementos de luz de fondo (Glows de ambiente) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute top-1/3 -right-20 w-96 h-96 bg-accent-purple/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-10 left-1/4 w-80 h-80 bg-accent-cyan/15 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 3s;"></div>
+    </div>
+
+    <!-- 1. Menú Principal (Navbar) -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-accent-purple to-accent-cyan p-0.5 shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
+                            BotFlux<span class="text-indigo-400">.ai</span>
+                        </span>
+                        <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase -mt-1">Agentes Inteligentes</span>
+                    </div>
+                </a>
+
+                <!-- Enlaces de navegación (Desktop) -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#inicio" class="text-sm font-medium text-slate-200 hover:text-indigo-400 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Inicio</a>
+                    <a href="#caracteristicas" class="text-sm font-medium text-slate-300 hover:text-indigo-400 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Características</a>
+                    <a href="#casos-de-uso" class="text-sm font-medium text-slate-300 hover:text-indigo-400 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Casos de Uso</a>
+                    <a href="#precios" class="text-sm font-medium text-slate-300 hover:text-indigo-400 transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Precios</a>
+                </nav>
+
+                <!-- Botones CTA (Desktop) -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#login" class="text-sm font-semibold text-slate-300 hover:text-white px-4 py-2.5 rounded-lg transition-colors hover:bg-slate-800/50">
+                        Iniciar Sesión
+                    </a>
+                    <a href="#empezar" class="relative group overflow-hidden rounded-xl p-[1px] font-semibold text-sm">
+                        <span class="absolute inset-0 bg-gradient-to-r from-brand-500 via-accent-purple to-accent-cyan rounded-xl group-hover:opacity-90 transition-opacity"></span>
+                        <div class="relative px-5 py-2.5 bg-slate-950 rounded-[11px] group-hover:bg-opacity-0 transition-colors duration-300">
+                            <span class="bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent font-medium group-hover:text-white">
+                                Empezar Gratis
+                            </span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-800/60 focus:outline-none" aria-label="Abrir Menú">
+                        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-slate-800/80 px-4 pt-4 pb-6 space-y-3">
+            <a href="#inicio" class="block px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-slate-800/60">Inicio</a>
+            <a href="#caracteristicas" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800/60">Características</a>
+            <a href="#casos-de-uso" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800/60">Casos de Uso</a>
+            <a href="#precios" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800/60">Precios</a>
+            <div class="pt-4 border-t border-slate-800 flex flex-col gap-2">
+                <a href="#login" class="w-full text-center px-4 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors">
+                    Iniciar Sesión
+                </a>
+                <a href="#empezar" class="w-full text-center px-4 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-brand-600 to-accent-purple text-white shadow-lg shadow-brand-600/30">
+                    Empezar Gratis
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Sección de Presentación (Hero Section) -->
+    <main id="inicio" class="relative z-10 pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Columna Izquierda: Copys y Llamadas a la acción -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-8">
+                    
+                    <!-- Badges / Etiquetas de confianza -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-indigo-500/30 text-xs sm:text-sm font-medium text-indigo-300 shadow-inner">
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent font-semibold">
+                            Impulsado por GPT-4o & LLMs Avanzados
+                        </span>
+                        <span class="text-slate-500">|</span>
+                        <span class="text-slate-400">Sin tarjeta de crédito</span>
+                    </div>
+
+                    <!-- Encabezado Principal -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+                        Atención al cliente <br class="hidden sm:inline"/>
+                        <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            automatizada 24/7
+                        </span> 
+                        sin perder la calidez humana.
+                    </h1>
+
+                    <!-- Subtítulo -->
+                    <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Crea, entrena e integra agentes de Inteligencia Artificial que entienden el contexto de tu negocio, responden dudas al instante y multiplican tus conversiones de ventas en minutos.
+                    </p>
+
+                    <!-- Botones CTA Principales -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#demo-trial" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-600 via-accent-purple to-brand-500 text-white font-bold text-base shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group">
+                            <span>Prueba Gratis por 14 Días</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                        <a href="#contacto-demo" class="w-full sm:w-auto px-7 py-4 rounded-xl glass-card text-slate-200 hover:text-white font-semibold text-base border border-slate-700/60 hover:border-indigo-500/50 hover:bg-slate-800/50 transition-all flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Ver Demo en Vivo</span>
+                        </a>
+                    </div>
+
+                    <!-- Estadísticas Rápidas / Prueba Social -->
+                    <div class="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">+10M</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium">Mensajes procesados</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">99.9%</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium">Disponibilidad (SLA)</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent">3.5x</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium">Más ventas cerradas</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Columna Derecha: Mockup Interactivo del Chatbot en Vivo -->
+                <div class="lg:col-span-5 relative mt-6 lg:mt-0">
+                    
+                    <!-- Elemento decorativo tras el mockup -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-brand-600 via-accent-purple to-accent-cyan rounded-3xl blur-xl opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
+
+                    <!-- Contenedor del Chat Mockup -->
+                    <div class="relative rounded-2xl glass-card overflow-hidden shadow-2xl border border-slate-700/60 glow-effect">
+                        
+                        <!-- Header del Chat Simulator -->
+                        <div class="bg-slate-900/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                        🤖
+                                    </div>
+                                    <span class="bottom-0 right-0 absolute w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <h3 class="text-sm font-semibold text-white">Asistente BotFlux</h3>
+                                        <span class="bg-indigo-500/20 text-indigo-300 text-[10px] px-1.5 py-0.5 rounded font-mono font-medium">IA Activa</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400">Responde en &lt; 1 segundo</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="reset-chat-btn" class="text-xs text-slate-400 hover:text-indigo-300 bg-slate-800/80 hover:bg-slate-800 px-2.5 py-1 rounded-md transition-colors flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    Reiniciar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Área de Mensajes del Chat -->
+                        <div id="chat-messages" class="p-4 h-[350px] overflow-y-auto space-y-4 chat-scroll bg-slate-950/40 text-sm">
+                            
+                            <!-- Mensaje Bot (Bienvenida inicial) -->
+                            <div class="flex gap-2.5 max-w-[85%]">
+                                <div class="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex-shrink-0 flex items-center justify-center text-xs">
+                                    ⚡
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="bg-slate-800/90 text-slate-200 p-3 rounded-2xl rounded-tl-none border border-slate-700/50 shadow-sm">
+                                        ¡Hola! 👋 Soy el asistente virtual de demo. ¿En qué puedo ayudarte hoy a hacer crecer tu empresa?
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 px-1">Ahora mismo</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Opciones Rápidas Interactivas -->
+                        <div class="px-4 py-2 bg-slate-900/60 border-t border-slate-800/50 flex gap-2 overflow-x-auto text-xs no-scrollbar">
+                            <button onclick="sendQuickMessage('¿Cómo funciona la integración con WhatsApp?')" class="px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-indigo-600/30 hover:border-indigo-500/50 border border-slate-700 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                                💬 WhatsApp Integration
+                            </button>
+                            <button onclick="sendQuickMessage('¿Cuál es el precio mensual?')" class="px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-indigo-600/30 hover:border-indigo-500/50 border border-slate-700 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                                💳 Planes y Precios
+                            </button>
+                        </div>
+
+                        <!-- Formulario de Entrada de Chat -->
+                        <form id="chat-form" onsubmit="handleUserMessage(event)" class="p-3 bg-slate-900/90 border-t border-slate-800 flex gap-2 items-center">
+                            <input 
+                                type="text" 
+                                id="chat-input" 
+                                placeholder="Escribe un mensaje o prueba la IA..." 
+                                class="flex-1 bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                                autocomplete="off"
+                            >
+                            <button 
+                                type="submit" 
+                                class="bg-gradient-to-r from-brand-600 to-accent-purple text-white p-2.5 rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-md shadow-brand-500/20"
+                                aria-label="Enviar mensaje"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
+                        </form>
+
+                    </div>
+
+                    <!-- Badge flotante de integración -->
+                    <div class="absolute -bottom-5 -left-5 glass-card px-4 py-2.5 rounded-xl border border-slate-700/80 shadow-xl hidden sm:flex items-center gap-3 animate-float">
+                        <div class="flex -space-x-2">
+                            <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xs">🟢</div>
+                            <div class="w-7 h-7 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-xs">📘</div>
+                            <div class="w-7 h-7 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-xs">💜</div>
+                        </div>
+                        <div class="text-xs">
+                            <p class="font-semibold text-white">Omnicanal</p>
+                            <p class="text-slate-400">Web, WhatsApp, Insta & CRM</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts de Interacción (Menú Móvil y Simulación de Chatbot) -->
+    <script>
+        // 1. Lógica del Menú Móvil
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+
+        menuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.contains('hidden');
+            if (isOpen) {
+                mobileMenu.classList.remove('hidden');
+                iconOpen.classList.add('hidden');
+                iconClose.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            }
+        });
+
+        // 2. Lógica del Chatbot Interactivo
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const resetBtn = document.getElementById('reset-chat-btn');
+
+        // Respuestas predeterminadas simuladas
+        const botResponses = {
+            "whatsapp": "¡Sí! Te conectas con WhatsApp Business API en menos de 5 minutos. Podrás enviar catálogos, agendar citas y responder clientes automáticamente.",
+            "precio": "Nuestros planes comienzan desde $29/mes. Incluyen 14 días de prueba totalmente gratis sin requerir tarjeta de crédito.",
+            "demo": "¡Excelente! Puedes registrarte haciendo clic en 'Prueba Gratis' en el menú superior o agenda una llamada personalizada.",
+            "default": "Gracias por tu mensaje. Nuestra IA se entrena con los documentos de tu empresa para responder con precisión exacta a tus clientes."
+        };
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function appendUserMessage(text) {
+            const msgHtml = `
+                <div class="flex gap-2.5 max-w-[85%] ml-auto justify-end">
+                    <div class="space-y-1 text-right">
+                        <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md">
+                            ${escapeHtml(text)}
+                        </div>
+                        <span class="text-[10px] text-slate-500 px-1">${getCurrentTime()}</span>
+                    </div>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', msgHtml);
+            scrollToBottom();
+        }
+
+        function appendBotTyping() {
+            const typingId = 'typing-' + Date.now();
+            const typingHtml = `
+                <div id="${typingId}" class="flex gap-2.5 max-w-[85%]">
+                    <div class="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex-shrink-0 flex items-center justify-center text-xs">⚡</div>
+                    <div class="bg-slate-800/90 text-slate-300 p-3 rounded-2xl rounded-tl-none border border-slate-700/50 flex items-center gap-1.5">
+                        <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></span>
+                        <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                    </div>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', typingHtml);
+            scrollToBottom();
+            return typingId;
+        }
+
+        function appendBotMessage(text, typingId) {
+            const typingEl = document.getElementById(typingId);
+            if (typingEl) typingEl.remove();
+
+            const msgHtml = `
+                <div class="flex gap-2.5 max-w-[85%]">
+                    <div class="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex-shrink-0 flex items-center justify-center text-xs">⚡</div>
+                    <div class="space-y-1">
+                        <div class="bg-slate-800/90 text-slate-200 p-3 rounded-2xl rounded-tl-none border border-slate-700/50 shadow-sm">
+                            ${text}
+                        </div>
+                        <span class="text-[10px] text-slate-500 px-1">${getCurrentTime()}</span>
+                    </div>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', msgHtml);
+            scrollToBottom();
+        }
+
+        function processBotReply(userText) {
+            const typingId = appendBotTyping();
+            const lowerText = userText.toLowerCase();
+
+            let response = botResponses.default;
+            if (lowerText.includes('whatsapp')) response = botResponses.whatsapp;
+            else if (lowerText.includes('precio') || lowerText.includes('plan') || lowerText.includes('costo')) response = botResponses.precio;
+            else if (lowerText.includes('demo') || lowerText.includes('prueba') || lowerText.includes('hola')) response = botResponses.demo;
+
+            setTimeout(() => {
+                appendBotMessage(response, typingId);
+            }, 1000);
+        }
+
+        function handleUserMessage(e) {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            appendUserMessage(text);
+            chatInput.value = '';
+            processBotReply(text);
+        }
+
+        function sendQuickMessage(text) {
+            appendUserMessage(text);
+            processBotReply(text);
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        resetBtn.addEventListener('click', () => {
+            chatMessages.innerHTML = `
+                <div class="flex gap-2.5 max-w-[85%]">
+                    <div class="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex-shrink-0 flex items-center justify-center text-xs">⚡</div>
+                    <div class="space-y-1">
+                        <div class="bg-slate-800/90 text-slate-200 p-3 rounded-2xl rounded-tl-none border border-slate-700/50 shadow-sm">
+                            ¡Hola! 👋 Soy el asistente virtual de demo. ¿En qué puedo ayudarte hoy a hacer crecer tu empresa?
+                        </div>
+                        <span class="text-[10px] text-slate-500 px-1">Ahora mismo</span>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
 </body>
 </html>
